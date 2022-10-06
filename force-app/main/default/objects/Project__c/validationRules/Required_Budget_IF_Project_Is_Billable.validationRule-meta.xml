@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Required_Budget_IF_Project_Is_Billable</fullName>
+    <active>true</active>
+    <description>Project__c.Project_Budget__c should be populated if Project__c.Is_Billable__c = true. Error Location: Field Project Budget.</description>
+    <errorConditionFormula>IF( 
+     Is_Billable__c ,
+       ISBLANK( Project_Budge__c ) ,
+         null)</errorConditionFormula>
+    <errorDisplayField>Project_Budge__c</errorDisplayField>
+    <errorMessage>Project Budget should be populated if Project. Is Billable</errorMessage>
+</ValidationRule>

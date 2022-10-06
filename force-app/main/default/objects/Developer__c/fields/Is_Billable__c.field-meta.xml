@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Billable__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(  (Total_Billable_Projects__c  &gt; 0),
+        IMAGE(&quot;https://sfschool5-dev-ed.file.force.com/sfc/servlet.shepherd/version/renditionDownload?rendition=ORIGINAL_Png&amp;versionId=0687Q000004wrmp&amp;operationContext=CHATTER&amp;contentId=05T7Q00000JBaTk&quot;, &quot;Green&quot;, 25, 25),
+        IMAGE(&quot;https://sfschool5-dev-ed.file.force.com/sfc/servlet.shepherd/version/renditionDownload?rendition=ORIGINAL_Png&amp;versionId=0687Q000004wrmu&amp;operationContext=CHATTER&amp;contentId=05T7Q00000JBZjK&quot;, &quot;Yellow&quot;, 25, 25)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Is Billable?</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
