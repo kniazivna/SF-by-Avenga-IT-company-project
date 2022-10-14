@@ -72,6 +72,21 @@ public with sharing class ItCompanyDAO {
         system.debug('getDevelopers---------->' + getDevelopers);
         return getDevelopers;
     }
+    
+    public static Map<Id, Integer> getClientTotalActiveProjects(Set<Id> clientIds){
+        //return map, where key = client id, value = number of active projects.
+        Map<Id, Integer> mapOfClientTotalActiveProjects = new Map<Id, Integer>();
+        
+        Client__c [] clients = [SELECT Total_Active_Projects__c FROM Client__c WHERE Id IN :clientIds];
+        
+        for(Client__c c:clients){
+            if(!mapOfClientTotalActiveProjects.containsKey(c.id)){
+                mapOfClientTotalActiveProjects.put(c.id,(Integer)c.Total_Active_Projects__c);//Method does not exist or incorrect signature: void put(Id, Decimal) from the type Map<Id,Integer> тому кастувала до Integer, наскільки я розумію це так правильно називається
+            }
+        }
+        
+        system.debug('mapOfClientTotalActiveProjects-------------->' + mapOfClientTotalActiveProjects);
+        return mapOfClientTotalActiveProjects;
+    }
 
 }
-
