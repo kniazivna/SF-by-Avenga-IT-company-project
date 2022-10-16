@@ -46,7 +46,20 @@ public class ItCompanyServices{
     	}
     }
 
-
+  public static void deactivateProjects(Set<Id> projectIds){
+    //update project with Active__c = false, delete all project assignments
+    List<Project__c> prs = [SELECT Active__c  FROM Project__c WHERE id IN :projectIds];    
+        for(Project__c p:prs){
+            p.Active__c = false;}
+    List<Project_Assignment__c> pas = [SELECT Project__r.id  FROM Project_Assignment__c WHERE Project__r.id IN :projectIds];
+        try {
+        update prs;
+        delete pas;
+        System.debug('Projects updated Active__c = FALSE');
+    	} catch (DmlException e) {
+    	System.debug('A DML exception has occurred: ' +e.getMessage());
+    	}
+    }
 
 
 }
