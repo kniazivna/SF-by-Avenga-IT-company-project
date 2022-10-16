@@ -24,15 +24,29 @@ public class ItCompanyServices{
     public static void createProjectAssignment(Id projectId, Id developerId){
     //create project assignment
       try {
-	    Project_Assignment__c projectAssignment = new Project_Assignment__c(Name = 'PA-Test2', Developer__c = developerId, Project__c = projectId);
+	    Project_Assignment__c projectAssignment = new Project_Assignment__c(Name = 'PA-Test3', Developer__c = developerId, Project__c = projectId);
     	insert projectAssignment;
         System.debug(projectAssignment.Name + ' inserted Successfully');
     	} catch (DmlException e) {
     	System.debug('A DML exception has occurred: ' +e.getMessage());
     	}
+
     }
 
-    
+    public static void makeProjectBillable(Id projectId){
+    //update project with IsBillable__c = true
+    Project__c projectToUpdate = [SELECT Is_Billable__c/*, Project_Budge__c*/ FROM Project__c WHERE id = :projectId]; 
+    projectToUpdate.Is_Billable__c = true;
+    projectToUpdate.Project_Budge__c = 11111;//на цьому полі є валідейшн рул, як що Project_Budge__c незаповнений, то проект не може бути оплачуваний
+        try {
+        update projectToUpdate;
+        System.debug(projectToUpdate.id + ' updated successfully to status TRUE');
+    	} catch (DmlException e) {
+    	System.debug('A DML exception has occurred: ' +e.getMessage());
+    	}
+    }
+
+
 
 
 }
