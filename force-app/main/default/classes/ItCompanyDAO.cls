@@ -92,11 +92,11 @@ public with sharing class ItCompanyDAO {
    public static Map<Id, Integer> getDeveloperTotalBillableProjects(Set<Id> developerIds){
      //return map, where key = developer id, value = number of billable assigned projects.
      Map<Id, Integer> mapDeveloperTotalBillableProjects = new Map<Id, Integer>(); 
-        AggregateResult [] res = [SELECT Developer__r.Id, COUNT(Project__c) FROM Project_Assignment__c WHERE Developer__r.Id IN :developerIds AND Project__r.Is_Billable__c = TRUE GROUP BY Developer__r.Id];
+              AggregateResult [] res = [SELECT Developer__r.Id, COUNT(Project__c) FROM Project_Assignment__c WHERE Developer__r.Id IN :developerIds AND Project__r.Is_Billable__c = TRUE GROUP BY Developer__r.Id];
             for(AggregateResult r:res){
-               // if(!mapDeveloperTotalBillableProjects.containsKey(r.Id)){
-                //   mapDeveloperTotalBillableProjects.put(r.Id,Integer.valueof(r.get('expo0'))); 
-               // }
+                if(!mapDeveloperTotalBillableProjects.containsKey((Id)r.get('Id'))){
+                mapDeveloperTotalBillableProjects.put((Id)r.get('Id'),(Integer)r.get('expr0'));
+            }
             }
         system.debug(mapDeveloperTotalBillableProjects);
         return mapDeveloperTotalBillableProjects;
