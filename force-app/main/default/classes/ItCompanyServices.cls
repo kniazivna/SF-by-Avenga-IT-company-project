@@ -61,26 +61,43 @@ public class ItCompanyServices{
     	}
     }
 
-      public static List<Database.SaveResult> createDeveloperAndAssign(String devName, Set<Id> projectIds){
+     public static List<Database.SaveResult> createDeveloperAndAssign(String devName, Set<Id> projectIds){
     //create Developer record and assign projects to it
         Developer__c dev = new Developer__c(Name = devName);
+
+        List <Database.SaveResult> rsList= new List <Database.SaveResult>();  
+         
+        Database.SaveResult srDev = Database.insert(dev);
+        rsList.add(srDev);
         
-    Database.SaveResult srDev = Database.insert(dev);
-        if (srDev.isSuccess()){
-        System.debug('Successfully inserted project. Project ID: ' + srDev.getId());
-            //List<Project_Assignment__c> PAList = new List<Project_Assignment__c>();
-           // Project_Assignment__c PA = new PA(Developer__c = dev.Name)
-           // for(Integer i = 0; i < projectIds.size(); i++){
-              // Project_Assignment__c PA =  
-            //}
-        } else {
-             for(Database.Error err : srDev.getErrors()) {
-            System.debug('The following error has occurred.');
-            System.debug(err.getStatusCode() + ': ' + err.getMessage());
-            System.debug('Project fields that affected this error: ' + err.getFields());
-	        }
-        }
-       // return dsrList;
+        	if (srDev.isSuccess()){
+        	System.debug('Successfully inserted Developer. Developer ID: ' + srDev.getId());
+        	List <Project_Assignment__c> prAssgns = new List <Project_Assignment__c>();
+                
+                for(id prId:projectIds){
+                Project_Assignment__c prAssgn = new Project_Assignment__c(Name = 'PA-'+ devName + '-' + prId, Project__c = prId, Developer__c = dev.id);
+                prAssgns.add(prAssgn);}
+                
+        	    List <Database.SaveResult> srPrAssgns = Database.insert(prAssgns);
+                for(Database.SaveResult srPrAssgn:srPrAssgns){
+                    if (srPrAssgn.isSuccess()){
+        		System.debug('Successfully inserted ProjectAssignment. Project Assignment ID: ' + srPrAssgn.getId());
+                    }else{
+                    for(Database.Error err : srPrAssgn.getErrors()) {
+             		System.debug('The following error has occurred.');
+             		System.debug(err.getStatusCode() + ': ' + err.getMessage());
+             		System.debug('Project fields that affected this error: ' + err.getFields());
+	        			}
+                    }
+                }
+            } else {
+                for(Database.Error err : srDev.getErrors()) {
+                System.debug('The following error has occurred.');
+                System.debug(err.getStatusCode() + ': ' + err.getMessage());
+                System.debug('Project fields that affected this error: ' + err.getFields());
+	            }
+            }
+    return rsList;
     }
 
 
