@@ -61,5 +61,27 @@ public class ItCompanyServices{
     	}
     }
 
+      public static List<Database.SaveResult> createDeveloperAndAssign(String devName, Set<Id> projectIds){
+    //create Developer record and assign projects to it
+        Developer__c dev = new Developer__c(Name = devName);
+        
+    Database.SaveResult srDev = Database.insert(dev);
+        if (srDev.isSuccess()){
+        System.debug('Successfully inserted project. Project ID: ' + srDev.getId());
+            //List<Project_Assignment__c> PAList = new List<Project_Assignment__c>();
+           // Project_Assignment__c PA = new PA(Developer__c = dev.Name)
+           // for(Integer i = 0; i < projectIds.size(); i++){
+              // Project_Assignment__c PA =  
+            //}
+        } else {
+             for(Database.Error err : srDev.getErrors()) {
+            System.debug('The following error has occurred.');
+            System.debug(err.getStatusCode() + ': ' + err.getMessage());
+            System.debug('Project fields that affected this error: ' + err.getFields());
+	        }
+        }
+       // return dsrList;
+    }
+
 
 }
