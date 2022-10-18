@@ -98,7 +98,7 @@ public with sharing class ItCompanyDAO {
                 mapDeveloperTotalBillableProjects.put((Id)r.get('Id'),(Integer)r.get('expr0'));
             }
             }
-        system.debug('mapDeveloperTotalBillableProjects--------->' + mapDeveloperTotalBillableProjects);
+        system.debug(mapDeveloperTotalBillableProjects);
         return mapDeveloperTotalBillableProjects;
     }
 

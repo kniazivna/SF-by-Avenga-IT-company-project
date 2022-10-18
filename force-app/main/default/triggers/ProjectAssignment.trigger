@@ -1,0 +1,9 @@
+trigger ProjectAssignmentTrigger on Project_Assignment__c (before insert, before update, after insert){
+
+     if (Trigger.isBefore){
+        if (Trigger.isInsert){
+            ProjectAssignmentTriggerHandler.onBeforeInsert(Trigger.new);
+        }
+    }
+
+}
