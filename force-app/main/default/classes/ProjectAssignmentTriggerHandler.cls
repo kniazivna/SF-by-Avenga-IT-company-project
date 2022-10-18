@@ -12,7 +12,10 @@ public with sharing class ProjectAssignmentTriggerHandler {
     }
 
      //Total Billable Projects of the Developer should be recalculated each time a new Project Assignment is created
-    public static void onAfterInsert(List<Project_Assignment__c> newPas) {
+    
+
+
+public static void onAfterInsert(List<Project_Assignment__c> newPas) {
 
         Set<id> ProjectAssignment2Developer = new Set<id>();
    
@@ -42,4 +45,41 @@ public with sharing class ProjectAssignmentTriggerHandler {
                 update developers;
         }
 
-}
+        public static void onAfterUpdate(Map<Id, Project_Assignment__c> oldAssignmentsMap, List<Project_Assignment__c> newAssignments) {
+         
+         Set<id> devIds = new Set<id>();
+        // Set<id> prIds = new Set<id>();
+         
+          for (Project_Assignment__c newAssignment : newAssignments) {
+           devIds.add(newAssignment.Developer__c);
+             // prIds.add(newAssignment.Project__c);
+        }
+         
+          List<Developer__c> developers = [
+                SELECT Id, Total_Billable_Projects__c
+                FROM Developer__c
+                WHERE Id IN :devIds
+        ];
+         
+           // List<Project__c> prs = [
+             //   SELECT Id, Is_Billable__c
+             //   FROM Project__c
+              //  WHERE Id IN :prIds
+        //];
+         
+        for (Project_Assignment__c newAssignment : newAssignments) {
+            Project_Assignment__c oldAssignment = oldAssignmentsMap.get(newAssignment.Id);
+        
+            if (oldAssignment.Project__r.Is_Billable__c != newAssignment.Project__r.Is_Billable__c) {
+                for(Developer__c dev:developers ){
+                if(newAssignment.Project__r.Is_Billable__c){
+                    dev.Total_Billable_Projects__c +=1;
+                } else dev.Total_Billable_Projects__c -=1;
+            }
+                
+            }
+        }
+        
+         update developers;
+    }
+    }

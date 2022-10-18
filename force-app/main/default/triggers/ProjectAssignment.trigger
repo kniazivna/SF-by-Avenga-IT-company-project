@@ -9,8 +9,7 @@ trigger ProjectAssignmentTrigger on Project_Assignment__c (before insert, before
      else if (Trigger.isAfter) {
         if (Trigger.isInsert) {
             ProjectAssignmentTriggerHandler.onAfterInsert(Trigger.new);
-        
-    }
+        }
     }
 
 }
