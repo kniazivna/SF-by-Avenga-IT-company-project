@@ -11,6 +11,7 @@ public with sharing class ProjectAssignmentTriggerHandler {
             }
     }
 
+     //Total Billable Projects of the Developer should be recalculated each time a new Project Assignment is created
     public static void onAfterInsert(List<Project_Assignment__c> newPas) {
 
         Set<id> ProjectAssignment2Developer = new Set<id>();
@@ -26,17 +27,19 @@ public with sharing class ProjectAssignmentTriggerHandler {
                 WHERE Id IN :ProjectAssignment2Developer
         ];
          system.debug(developers);
+        
         for (Developer__c developer : developers) {
             for (id devId : ProjectAssignment2Developer){
                 //if(ProjectAssignment2Developer.contains(developer.Id)){
                 if(devId == developer.Id){
-                system.debug(developer.Total_Billable_Projects__c);
+                    system.debug(developer.Total_Billable_Projects__c);
                 developer.Total_Billable_Projects__c += 1;
-                system.debug(developer.Total_Billable_Projects__c);
+                    system.debug(developer.Total_Billable_Projects__c);
                 }  
+            }         
             }
-                       
+        system.debug(developers);
+                update developers;
         }
-        update developers;
-    }
+
 }
