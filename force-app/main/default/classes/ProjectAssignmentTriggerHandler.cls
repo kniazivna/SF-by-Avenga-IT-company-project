@@ -13,9 +13,7 @@ public with sharing class ProjectAssignmentTriggerHandler {
 
      //Total Billable Projects of the Developer should be recalculated each time a new Project Assignment is created
     
-
-
-public static void onAfterInsert(List<Project_Assignment__c> newPas) {
+    public static void onAfterInsert(List<Project_Assignment__c> newPas) {
 
         Set<id> ProjectAssignment2Developer = new Set<id>();
    
