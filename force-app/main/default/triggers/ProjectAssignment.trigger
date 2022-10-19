@@ -11,7 +11,7 @@ trigger ProjectAssignmentTrigger on Project_Assignment__c (before insert, before
             ProjectAssignmentTriggerHandler.onAfterInsert(Trigger.new);
         }
         else if (Trigger.isUpdate) {
-            ProjectAssignmentTriggerHandler.onAfterInsert(Trigger.newMap, Trigger.new);
+            ProjectAssignmentTriggerHandler.onAfterUpdate(Trigger.newMap, Trigger.new);
         }
     }
     }
