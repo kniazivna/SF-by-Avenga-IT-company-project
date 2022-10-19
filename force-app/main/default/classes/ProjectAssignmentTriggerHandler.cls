@@ -15,32 +15,44 @@ public with sharing class ProjectAssignmentTriggerHandler {
     
     public static void onAfterInsert(List<Project_Assignment__c> newPas) {
 
-        Set<id> ProjectAssignment2Developer = new Set<id>();
+            Set<id> ProjectAssignment2Developer = new Set<id>();
    
-        for (Project_Assignment__c newPa : newPas) {
-           ProjectAssignment2Developer.add(newPa.Developer__c);
-        }
-         system.debug(ProjectAssignment2Developer);
+            for (Project_Assignment__c newPa : newPas) {
+            //тут вирішила перевірити чи проект Billable, бо якщо ні, то нам в сеті цей Id не потрібний
+                if(newPa.Project__r.Is_Billable__c){
+                ProjectAssignment2Developer.add(newPa.Developer__c);
+                }
+            }
         
-        List<Developer__c> developers = [
+            List<Developer__c> developers = [
                 SELECT Id, Total_Billable_Projects__c
                 FROM Developer__c
                 WHERE Id IN :ProjectAssignment2Developer
-        ];
-         system.debug(developers);
+            ];
+                system.debug(developers);
         
-        for (Developer__c developer : developers) {
-            for (id devId : ProjectAssignment2Developer){
-                //if(ProjectAssignment2Developer.contains(developer.Id)){
-                if(devId == developer.Id){
-                    system.debug(developer.Total_Billable_Projects__c);
-                developer.Total_Billable_Projects__c += 1;
-                    system.debug(developer.Total_Billable_Projects__c);
-                }  
-            }         
+            AggregateResult [] devs = [
+            SELECT Developer__r.Id,
+            COUNT(Developer__r.Total_Billable_Projects__c)
+            FROM Project_Assignment__c
+            WHERE Developer__r.Id IN :ProjectAssignment2Developer
+            GROUP BY Developer__r.Id];
+            system.debug(devs);
+        
+            for (Developer__c developer : developers) {
+                for (AggregateResult dev : devs) {
+                    for (id devId : ProjectAssignment2Developer){
+                        if(ProjectAssignment2Developer.contains(dev.Id)){
+                	        if(devId == dev.Id){
+                            integer totalBillableProjects = integer.valueof(dev.get('expr0'));
+                            developer.Total_Billable_Projects__c = totalBillableProjects + 1;  
+                	        }  
+            	        }         
+                    }
+                }
             }
+            update developers;
         system.debug(developers);
-                update developers;
         }
 
         public static void onAfterUpdate(Map<Id, Project_Assignment__c> oldAssignmentsMap, List<Project_Assignment__c> newAssignments) {
