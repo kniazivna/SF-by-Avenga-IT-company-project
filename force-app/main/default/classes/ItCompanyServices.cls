@@ -33,11 +33,11 @@ public class ItCompanyServices{
 
     }
 
-    public static void makeProjectBillable(Id projectId){
+    public static void makeProjectBillable(Id projectId, Decimal projectBudget){
     //update project with IsBillable__c = true
     Project__c projectToUpdate = [SELECT Is_Billable__c/*, Project_Budge__c*/ FROM Project__c WHERE id = :projectId]; 
     projectToUpdate.Is_Billable__c = true;
-    projectToUpdate.Project_Budge__c = 11111;//на цьому полі є валідейшн рул, як що Project_Budge__c незаповнений, то проект не може бути оплачуваний
+    //projectToUpdate.Project_Budge__c = 11111;//на цьому полі є валідейшн рул, як що Project_Budge__c незаповнений, то проект не може бути оплачуваний
         try {
         update projectToUpdate;
         System.debug(projectToUpdate.id + ' updated successfully to status TRUE');

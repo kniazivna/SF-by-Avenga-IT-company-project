@@ -6,7 +6,7 @@ public with sharing class ItCompanyDAO {
             SELECT Developer__c 
             FROM Project_Assignment__c 
             WHERE Developer__r.Total_Billable_Projects__c < 5 
-            OR Developer__r.Total_Billable_Projects__c = NULL 
+           // OR Developer__r.Total_Billable_Projects__c = NULL 
             ]);
       
             Set<Id> setId = new Set<Id>();
@@ -34,7 +34,7 @@ public with sharing class ItCompanyDAO {
           setId.add(DeveloperId.Id);
         }
 
-        System.debug('getUnassignedDeveloperIds---------->' + setId);
+        //System.debug('getUnassignedDeveloperIds---------->' + setId);
         return setId;
     }
 
@@ -48,7 +48,7 @@ public with sharing class ItCompanyDAO {
         + 'OFFSET :offsetNumber'
         );
 
-        system.debug('getClients------------>' + getClients);
+        //system.debug('getClients------------>' + getClients);
         return getClients;
 
     }
