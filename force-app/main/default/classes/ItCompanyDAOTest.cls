@@ -29,17 +29,6 @@ public class ItCompanyDAOTest {
     @isTest
     static void getAvailableDeveloperIdsTest(){
               
-    /*List<Project_Assignment__c> availableDeveloperIds = new List<Project_Assignment__c>([
-            SELECT Developer__c 
-            FROM Project_Assignment__c 
-            WHERE Developer__r.Total_Billable_Projects__c < 5  
-            ]);
-        
-     Set<Id> setId = new Set<Id>();
-      
-     for( Project_Assignment__c availableDeveloperId : availableDeveloperIds){
-     setId.add(availableDeveloperId.Id);
-     }*/
               
     Test.startTest();
         
@@ -52,17 +41,7 @@ public class ItCompanyDAOTest {
     
     @isTest
     static void getUnassignedDeveloperIdsTest(){
-        
-    /*List<Developer__c> DevelopersIds = new List<Developer__c>([
-            SELECT Id 
-            FROM Developer__c 
-            WHERE Total_Billable_Projects__c = 0 
-            ]);
-        
-   Set<Id> setId = new Set<Id>();
-      
-   for( Developer__c DeveloperId : DevelopersIds){
-   setId.add(DeveloperId.Id);*/       
+               
     Test.startTest();
         
     Set<Id> resultSet = ItCompanyDAO.getUnassignedDeveloperIds();
@@ -77,14 +56,6 @@ public class ItCompanyDAOTest {
     static void getClientsTest(){
         Integer limitNumber = 2;
         Integer offsetNumber = 2;
-        
-        /* List<Client__c> getClients = Database.query(
-        'SELECT Name, Email__c, Total_Active_Projects__c, Budget__c '
-        + 'FROM Client__c '
-        + 'ORDER BY Name ASC '
-        + 'LIMIT :limitNumber ' 
-        + 'OFFSET :offsetNumber'
-        );*/
                 
     Test.startTest();
         
@@ -103,19 +74,6 @@ public class ItCompanyDAOTest {
          List<Developer__c> devs = [SELECT Id,Name FROM Developer__c];
          for(Developer__c dev: devs){
           developerId.add(dev.id);}
-
-    
-        /*String sqlString = 'SELECT Name, Total_Billable_Projects__c FROM Developer__c ';
-       
-        if(developerId != NULL){
-			sqlString += 'WHERE Id IN :developerId ';
-        }
-		    if(limitNumber != NULL){
-			  sqlString += 'LIMIT :limitNumber ';
-		    }
-        if(offsetNumber != NULL){
-			  sqlString += 'OFFSET :offsetNumber';
-		    }*/
         
      Test.startTest();
         
