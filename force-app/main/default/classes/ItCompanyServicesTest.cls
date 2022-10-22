@@ -119,8 +119,24 @@ public class ItCompanyServicesTest {
            
     System.assertEquals(3, numOfActivePr, 'Project is active.');
     System.assertEquals(0, pas.size(), 'Project Assignment weren\'t deleted.');
-
-   
     }
     
+    @isTest
+    static void createDeveloperAndAssignTest(){
+    //create Developer record and assign projects to it
+    String devName = 'TestDev';
+    Set<Id> projectIds = new Set<Id>();
+    List<Project__c> prs = [SELECT Id FROM Project__c WHERE Active__c = true];
+    	for(Project__c p: prs){
+        projectIds.add(p.id);}
+        
+    Test.startTest();
+      
+    List<Database.SaveResult> srList = ItCompanyServices.createDeveloperAndAssign(devName, projectIds);
+        
+    Test.stopTest();
+        
+    System.assertEquals(true, srList.size() > 0, 'ItCompanyServicesTest.createDeveloperAndAssign weren\'t created.');
+
+        }
 }

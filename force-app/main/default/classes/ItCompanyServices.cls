@@ -16,7 +16,7 @@ public class ItCompanyServices{
             System.debug('Project fields that affected this error: ' + err.getFields());
 	        }
         }
-        
+        system.debug(srProject);
         return srProject;
     
     }
@@ -35,9 +35,9 @@ public class ItCompanyServices{
 
     public static void makeProjectBillable(Id projectId, Decimal projectBudget){
     //update project with IsBillable__c = true
-    Project__c projectToUpdate = [SELECT Is_Billable__c/*, Project_Budge__c*/ FROM Project__c WHERE id = :projectId]; 
+    Project__c projectToUpdate = [SELECT Is_Billable__c FROM Project__c WHERE id = :projectId]; 
     projectToUpdate.Is_Billable__c = true;
-    //projectToUpdate.Project_Budge__c = 11111;//на цьому полі є валідейшн рул, як що Project_Budge__c незаповнений, то проект не може бути оплачуваний
+    projectToUpdate.Project_Budge__c = projectBudget;//на цьому полі є валідейшн рул, як що Project_Budge__c незаповнений, то проект не може бути оплачуваний
         try {
         update projectToUpdate;
         System.debug(projectToUpdate.id + ' updated successfully to status TRUE');
@@ -81,6 +81,7 @@ public class ItCompanyServices{
         	    List <Database.SaveResult> srPrAssgns = Database.insert(prAssgns);
                 for(Database.SaveResult srPrAssgn:srPrAssgns){
                     if (srPrAssgn.isSuccess()){
+                        rsList.add(srPrAssgn);
         		System.debug('Successfully inserted ProjectAssignment. Project Assignment ID: ' + srPrAssgn.getId());
                     }else{
                     for(Database.Error err : srPrAssgn.getErrors()) {
@@ -90,13 +91,8 @@ public class ItCompanyServices{
 	        			}
                     }
                 }
-            } else {
-                for(Database.Error err : srDev.getErrors()) {
-                System.debug('The following error has occurred.');
-                System.debug(err.getStatusCode() + ': ' + err.getMessage());
-                System.debug('Project fields that affected this error: ' + err.getFields());
-	            }
-            }
+            } 
+    system.debug(rsList);
     return rsList;
     }
 
