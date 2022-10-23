@@ -1,0 +1,29 @@
+<aura:component controller="MostProfitableClientsController" implements="flexipage:availableForAllPageTypes">
+    
+    <aura:attribute name="clients" type="Client__c[]"/>
+    <aura:attribute name="limitNumber" type="Integer" default="10"/>
+    <aura:attribute name="columns" type="List" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.limitNumber}" action="{!c.reLoadClients}" />
+    
+    <div class="slds-box slds-box_small slds-theme_default">
+         <lightning:layout >
+             
+             <lightning:layoutItem padding="around-small" size="9">
+                 <lightning:datatable
+            columns="{! v.columns }"
+            data="{! v.clients }"
+            keyField="id"
+            hideCheckboxColumn="true"/>  
+             </lightning:layoutItem>
+             
+             <lightning:layoutItem padding="around-small" size="3"> 
+             	<ui:inputNumber label = "Number of clients:" value = "{!v.limitNumber}" updateOn="keyup"/>          
+             </lightning:layoutItem>
+             
+        </lightning:layout>
+
+	</div>
+	
+</aura:component>

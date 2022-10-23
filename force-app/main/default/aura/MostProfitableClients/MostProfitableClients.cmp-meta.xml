@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AuraDefinitionBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>56.0</apiVersion>
+    <description>Create lightning component for most profitable clients view. System should query 10 most profitable clients (based on &quot;&quot;total amount&quot;&quot;).
+
+Use lightning:datatable. Add lightning component to Home page via Lightning App Builder</description>
+</AuraDefinitionBundle>

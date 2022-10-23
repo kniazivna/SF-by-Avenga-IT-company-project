@@ -10,8 +10,8 @@ trigger ProjectAssignmentTrigger on Project_Assignment__c (before insert, before
         if (Trigger.isInsert) {
             ProjectAssignmentTriggerHandler.onAfterInsert(Trigger.new);
         }
-        else if (Trigger.isUpdate) {
-            ProjectAssignmentTriggerHandler.onAfterUpdate(Trigger.newMap, Trigger.new);
+        else if (Trigger.isUpdate) {                       //була помилкаб я брала newMap перевірити
+            ProjectAssignmentTriggerHandler.onAfterUpdate(Trigger.oldMap, Trigger.new);
         }
     }
     }
