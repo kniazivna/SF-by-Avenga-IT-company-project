@@ -25,7 +25,7 @@ export default class DeveloperProjectAssignments extends LightningElement {
 
     showInfoToast() {
     const evt = new ShowToastEvent({
-        title: 'Toast Info',
+        title: 'Info',
         message: 'Refresh is not yet configured',
         variant: 'info',
         mode: 'dismissable'
