@@ -11,7 +11,7 @@
     
     getClients : function(component, event,helper) {
     
-    var action = component.get("c.getMostProfitableClients");
+        var action = component.get("c.getMostProfitableClients");
     
     action.setParams({
     "limitNumber": component.get("v.limitNumber")
