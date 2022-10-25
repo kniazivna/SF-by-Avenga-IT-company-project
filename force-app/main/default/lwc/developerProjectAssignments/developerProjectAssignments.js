@@ -4,7 +4,7 @@ import getRelatedProjectAssignments from '@salesforce/apex/GetRelatedProjectAssi
 
 
 const columns = [
-    { label: 'Project Assignment Number',cellAttributes: { alignment: 'center'}, fieldName: 'Project_Assignment_Number__c', type: 'text', cellAttributes: { alignment: 'center' } },
+    { label: 'Project Assignment Number', fieldName: 'Project_Assignment_Number__c', type: 'text', cellAttributes: { alignment: 'center' } },
     { label: 'Name', fieldName: 'Name', type: 'text', cellAttributes: { alignment: 'center'}},
 ];
 
@@ -23,11 +23,11 @@ export default class DeveloperProjectAssignments extends LightningElement {
     }
 
 
-    showWarningToast() {
+    showInfoToast() {
     const evt = new ShowToastEvent({
-        title: 'Toast Warning',
+        title: 'Toast Info',
         message: 'Refresh is not yet configured',
-        variant: 'warning',
+        variant: 'info',
         mode: 'dismissable'
     });
     this.dispatchEvent(evt);
