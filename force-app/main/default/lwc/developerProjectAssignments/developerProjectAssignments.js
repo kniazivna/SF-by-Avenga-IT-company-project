@@ -11,18 +11,26 @@ const columns = [
 
 export default class DeveloperProjectAssignments extends LightningElement {
 
-    @api recordId
-    columns = columns
+    @api recordId;
+    columns = columns;
+    projectAssignments;
+    error;
+    
     @wire(getRelatedProjectAssignments, {currentDeveloperId: '$recordId'}) projectassignments;
-    
-    
-
-
-    connectedCallback() {
-        getRelatedProjectAssignments(this.recordId);
+    wiredRelatedProjectAssignments({error, data}){
+        if(data){
+            this.projectAssignments = data;
+            this.error  = undefined;
+        } else if (error){
+            this.error = error;
+            this.projectAssignments = undefined;
+        }
     }
 
-
+    handleClick(){
+        this.showInfoToast();
+    }
+    
     showInfoToast() {
     const evt = new ShowToastEvent({
         title: 'Info',
