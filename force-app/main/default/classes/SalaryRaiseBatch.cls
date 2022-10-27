@@ -2,7 +2,9 @@ public class SalaryRaiseBatch implements Database.Batchable <sObject>, Schedulab
     public Database.QueryLocator start(Database.BatchableContext bc) {
 
         return Database.getQueryLocator(
-        'SELECT Id, Salary__c, LastRaiseDate__c, (SELECT Id FROM Project_Assignments__r WHERE Project__r.Is_Billable__c = true) FROM Developer__c'
+        'SELECT Id, Salary__c, LastRaiseDate__c, ' 
+        + '(SELECT Id FROM Project_Assignments__r WHERE Project__r.Is_Billable__c = true) ' 
+        + 'FROM Developer__c'
         );
     }
     
