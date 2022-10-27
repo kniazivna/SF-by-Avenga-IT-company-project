@@ -20,10 +20,8 @@ export default class DeveloperProjectAssignments extends LightningElement {
     wiredRelatedProjectAssignments({error, data}){
         if(data){
             this.projectAssignments = data;
-            this.error  = undefined;
         } else if (error){
             this.error = error;
-            this.projectAssignments = undefined;
         }
     }
 
