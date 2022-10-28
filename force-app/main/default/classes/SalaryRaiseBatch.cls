@@ -9,13 +9,16 @@ public class SalaryRaiseBatch implements Database.Batchable <sObject>, Schedulab
     }
     
     public void execute(Database.BatchableContext bc, List<Developer__c> devs){
-        
+
+        List<Developer__c> updatedDevs = new List<Developer__c>();
         for (Developer__c dev : devs) {
-               if(dev.LastRaiseDate__c.monthsBetween(Date.today()) == 6){
-               dev.Salary__c += (dev.Project_Assignments__r.size() * 100);
-               }
+            if(dev.LastRaiseDate__c.monthsBetween(Date.today()) == 6){
+                dev.Salary__c += dev.Project_Assignments__r.size() * 100;
+                dev.LastRaiseDate__c = Date.today();
+                updatedDevs.add(dev);
+            }
         }
-        update devs;
+        update updatedDevs;
     }
     
     public void finish(Database.BatchableContext bc){
@@ -29,3 +32,36 @@ public class SalaryRaiseBatch implements Database.Batchable <sObject>, Schedulab
         Id batchId = Database.executeBatch(salaryRaiseBatch);
     }
 }
+/*public class SalaryRaiseBatch implements Database.Batchable <sObject>, Schedulable {
+    public Database.QueryLocator start(Database.BatchableContext bc) {
+
+        return Database.getQueryLocator(
+        'SELECT Id, Salary__c, LastRaiseDate__c FROM Developer__c'
+        );
+    }
+    
+    public void execute(Database.BatchableContext bc, List<Developer__c> devs){
+        
+        List<Project_Assignment__c>pas = new List<Project_Assignment__c>([SELECT Id, Developer__c  FROM Project_Assignment__c WHERE Project__r.Is_Billable__c = true]);
+        
+        for(Project_Assignment__c pa: pas){
+        for (Developer__c dev : devs) {
+               if(dev.id == pa.Developer__c && dev.LastRaiseDate__c.monthsBetween(Date.today()) == 6){
+               dev.Salary__c += pas.size() * 100;
+               }
+        }
+            }
+        update devs;
+    }
+    
+    public void finish(Database.BatchableContext bc){
+     
+        system.debug('Done.');
+    }
+
+    public void execute(SchedulableContext ctx) {
+
+        SalaryRaiseBatch salaryRaiseBatch = new SalaryRaiseBatch();
+        Id batchId = Database.executeBatch(salaryRaiseBatch);
+    }
+}*/
