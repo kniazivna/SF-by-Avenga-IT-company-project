@@ -13,8 +13,12 @@ public class GetDeveloperByIdAndUpdate {
         }
     }
 
-    @AuraEnabled(Cacheable = true)
-    public static void getDeveloperByIdAndUpdate(Id currentDeveloperId) {
+    @AuraEnabled()
+    public static Developer__c getDeveloperByIdAndUpdate(Id currentDeveloperId) {
+         Developer__c developer = [
+                    SELECT Id, Name, Total_Billable_Projects__c, Last_Sync_Date__c 
+                    FROM Developer__c 
+                    WHERE Id = :currentDeveloperId];
         try{  
             Http http = new Http();
             HttpRequest request = new HttpRequest();
@@ -27,24 +31,22 @@ public class GetDeveloperByIdAndUpdate {
     
                 if(response.getStatusCode() != 200) {
                     System.debug('The status code returned was not expected: ' + response.getStatusCode() + ' ' + response.getStatus());
+                    return null;
                 } else {
                     System.debug(response.getBody());
                     Developer devToUpdate = (Developer)JSON.deserialize(response.getBody(), Developer.class);
-   
-                    Developer__c developer = [
-                    SELECT Id, Name, Total_Billable_Projects__c, Last_Sync_Date__c 
-                    FROM Developer__c 
-                    WHERE Id = :currentDeveloperId];
-    
                     developer.Name = devToUpdate.name;
                     developer.Total_Billable_Projects__c = devToUpdate.totalBillableProjects;
                     developer.Last_Sync_Date__c = Datetime.now();
                     system.debug(developer);
+                    
                     update developer;
+                    system.debug(developer);
+                    return developer;
                 }
-     
         }catch(System.CalloutException e){
             throw new AuraHandledException(e.getMessage());
         }
+        
     }
 }

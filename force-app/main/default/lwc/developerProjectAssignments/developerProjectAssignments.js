@@ -1,4 +1,5 @@
 import { LightningElement, api, wire, track } from 'lwc';
+import { getRecord ,getRecordNotifyChange } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getRelatedProjectAssignments from '@salesforce/apex/GetRelatedProjectAssignmentsController.getRelatedProjectAssignments';
 import getDeveloperByIdAndUpdate from '@salesforce/apex/GetDeveloperByIdAndUpdate.getDeveloperByIdAndUpdate';
@@ -9,20 +10,23 @@ const columns = [
     { label: 'Name', fieldName: 'Name', type: 'text', cellAttributes: { alignment: 'center'}},
 ];
 
+const fields = [
+    'Developer__c.Id',
+    'Developer__c.Total_Billable_Projects__c',
+    'Developer__c.Last_Sync_Date__c',
+    'Developer__c.Name',
+    ];
+
 
 export default class DeveloperProjectAssignments extends LightningElement {
 
     @api recordId;
-    //@api objectName = 'Developer__c';
-    @api sObjData;
-    updatedsObjData;
     columns = columns;
     projectAssignments;
-    
     error;
-    
     @wire(getRelatedProjectAssignments, {currentDeveloperId: '$recordId'}) projectassignments;
-    @wire(getDeveloperByIdAndUpdate, ({currentDeveloperId: '$recordId'})) sObjData;
+    //init рекорду
+    @wire(getRecord, { recordId: '$recordId', fields: fields }) record;
     
 
 
@@ -34,23 +38,21 @@ export default class DeveloperProjectAssignments extends LightningElement {
         }
     }
 
-
-    wiredGetDeveloperByIdAndUpdate({error, data}){
-        if(data){
-            this.sObjData = data;
-        } else if (error){
+    handleClick(){
+    getDeveloperByIdAndUpdate (this.recordId)
+        .then(data =>{
+            this.record = data;;
+            //тут вказуємо,що змінили рекорд
+            getRecordNotifyChange([{recordId: this.recordId}]);
+            console.log('++++++');
+        })
+        .catch(error => {
             this.error = error;
-        }
+               console.log(error); 
+        })
     }
-
-     handleClick(){
-     this.sObjData = this.updatedsObjData;
-     
-    }
-    
-    
-    
-   /* showInfoToast() {
+        
+    /*showInfoToast() {
     const evt = new ShowToastEvent({
         title: 'Info',
         message: 'Refresh is not yet configured',
@@ -58,6 +60,6 @@ export default class DeveloperProjectAssignments extends LightningElement {
         mode: 'dismissable'
     });
     this.dispatchEvent(evt);
-}*/
+    }*/
    
 }
