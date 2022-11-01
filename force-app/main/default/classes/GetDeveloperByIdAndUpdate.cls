@@ -14,11 +14,11 @@ public class GetDeveloperByIdAndUpdate {
     }
 
     @AuraEnabled()
-    public static Developer__c getDeveloperByIdAndUpdate(Id currentDeveloperId) {
-         Developer__c developer = [
-                    SELECT Id, Name, Total_Billable_Projects__c, Last_Sync_Date__c 
-                    FROM Developer__c 
-                    WHERE Id = :currentDeveloperId];
+    public static Developer/*__c*/ getDeveloperByIdAndUpdate(Id currentDeveloperId) {
+        //  Developer__c developer = [
+        //             SELECT Id, Name, Total_Billable_Projects__c, Last_Sync_Date__c 
+        //             FROM Developer__c 
+        //             WHERE Id = :currentDeveloperId];
         try{  
             Http http = new Http();
             HttpRequest request = new HttpRequest();
@@ -35,14 +35,14 @@ public class GetDeveloperByIdAndUpdate {
                 } else {
                     System.debug(response.getBody());
                     Developer devToUpdate = (Developer)JSON.deserialize(response.getBody(), Developer.class);
-                    developer.Name = devToUpdate.name;
-                    developer.Total_Billable_Projects__c = devToUpdate.totalBillableProjects;
-                    developer.Last_Sync_Date__c = Datetime.now();
-                    system.debug(developer);
+                    // developer.Name = devToUpdate.name;
+                    // developer.Total_Billable_Projects__c = devToUpdate.totalBillableProjects;
+                    // developer.Last_Sync_Date__c = Datetime.now();
+                    // system.debug(developer);
                     
-                    update developer;
-                    system.debug(developer);
-                    return developer;
+                    // update developer;
+                    // system.debug(developer);
+                    return devToUpdate;
                 }
         }catch(System.CalloutException e){
             throw new AuraHandledException(e.getMessage());
