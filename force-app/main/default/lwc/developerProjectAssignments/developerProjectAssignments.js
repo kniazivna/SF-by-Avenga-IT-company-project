@@ -1,6 +1,6 @@
 import { LightningElement, api, wire, track } from 'lwc';
 import { getRecord ,getRecordNotifyChange } from 'lightning/uiRecordApi';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+//import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getRelatedProjectAssignments from '@salesforce/apex/GetRelatedProjectAssignmentsController.getRelatedProjectAssignments';
 import getDeveloperByIdAndUpdate from '@salesforce/apex/GetDeveloperByIdAndUpdate.getDeveloperByIdAndUpdate';
 
@@ -21,7 +21,6 @@ const fields = [
 export default class DeveloperProjectAssignments extends LightningElement {
 
     @api recordId;
-
     columns = columns;
     projectAssignments;
     error;
@@ -40,23 +39,14 @@ export default class DeveloperProjectAssignments extends LightningElement {
     }
 
     handleClick(){
-        console.log(this.record.data.fields.Total_Billable_Projects__c.value);
-     console.log(this.record.data.fields.Name.value);
-     console.log(this.record.data.fields.Last_Sync_Date__c.value);
-    console.log(this.recordId);
-    getDeveloperByIdAndUpdate (this.recordId)
-        .then(devToUpdate =>{
-            this.record = devToUpdate;;
-            //тут вказуємо,що змінили рекорд
-            //getRecordNotifyChange([{recordId: this.recordId}]);
-            console.log('++++++');
-             console.log(devToUpdate);
-        })
-        // .catch(error => {
-        //     this.error = error;
-        //        console.log(error); 
-        // })
-}
+    
+        getDeveloperByIdAndUpdate ({currentDeveloperId:this.recordId})
+        
+        .then(data =>{      //тут вказуємо,що змінили рекорд
+            this.record = data})
+            getRecordNotifyChange(this.recordId)
+        }
+    
         
     /*showInfoToast() {
     const evt = new ShowToastEvent({
@@ -67,5 +57,4 @@ export default class DeveloperProjectAssignments extends LightningElement {
     });
     this.dispatchEvent(evt);
     }*/
-   
-}
+}   

@@ -1,24 +1,26 @@
 public class GetDeveloperByIdAndUpdate {
     
     public class Developer{
-        private String name;
-        private Integer totalBillableProjects;
-        private Id recordId;
+       @AuraEnabled public String name;
+       @AuraEnabled public Integer totalBillableProjects;
+       @AuraEnabled public Id recordId;
+      /* @AuraEnabled public Datetime lastSynsDate;*/
         
-        public Developer(String name, Integer totalBillableProjects, String recordId){
-            this.name = name;
-            this.totalBillableProjects = totalBillableProjects;
-            this.recordId = recordId;
+        public Developer(String name, Integer totalBillableProjects, String recordId, Datetime lastSynsDate){
+           this.name = name;
+           this.totalBillableProjects = totalBillableProjects;
+           this.recordId = recordId;
+          /* this.lastSynsDate = lastSynsDate;*/
             
         }
     }
 
-    @AuraEnabled()
-    public static Developer/*__c*/ getDeveloperByIdAndUpdate(Id currentDeveloperId) {
-        //  Developer__c developer = [
-        //             SELECT Id, Name, Total_Billable_Projects__c, Last_Sync_Date__c 
-        //             FROM Developer__c 
-        //             WHERE Id = :currentDeveloperId];
+    @AuraEnabled
+    public static /*String*/ Developer getDeveloperByIdAndUpdate(Id currentDeveloperId) {
+          /*Developer__c developer = [
+                     SELECT Id, Name, Total_Billable_Projects__c, Last_Sync_Date__c 
+                     FROM Developer__c 
+                     WHERE Id = :currentDeveloperId];*/
         try{  
             Http http = new Http();
             HttpRequest request = new HttpRequest();
@@ -34,14 +36,15 @@ public class GetDeveloperByIdAndUpdate {
                     return null;
                 } else {
                     System.debug(response.getBody());
+                   // return response.getBody();
                     Developer devToUpdate = (Developer)JSON.deserialize(response.getBody(), Developer.class);
-                    // developer.Name = devToUpdate.name;
-                    // developer.Total_Billable_Projects__c = devToUpdate.totalBillableProjects;
-                    // developer.Last_Sync_Date__c = Datetime.now();
-                    // system.debug(developer);
+                    /*developer.Name = devToUpdate.name;
+                    developer.Total_Billable_Projects__c = devToUpdate.totalBillableProjects;
+                    developer.Last_Sync_Date__c = Datetime.now();
+                    system.debug(developer);
                     
-                    // update developer;
-                    // system.debug(developer);
+                    update developer;
+                    system.debug(developer);*/
                     return devToUpdate;
                 }
         }catch(System.CalloutException e){
